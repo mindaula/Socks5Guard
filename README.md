@@ -16,11 +16,11 @@ Overview
 
 This repository contains a comprehensive toolset designed for cybersecurity professionals and network administrators. It consists of two interrelated components:
 
-    Main Tool:
+    Main Tool (Socks5Guard.py):
         Purpose: Scrapes SOCKS5 proxies from various public sources, validates their functionality, checks their reputation against AbuseIPDB, and creates a blacklist of malicious or non-working proxies.
         Security Use-Case: Helps in detecting and blocking potentially dangerous proxies that might be used to circumvent security controls.
 
-    Geo-Enrichment Tool (Proxy GeoChecker/Enricher):
+    Geo-Enrichment Tool (Socks5GeoChecker.py):
         Purpose: Enhances proxy data by retrieving geographical location details (city and country) using IPInfo. This data is then stored in a JSON file.
         Security Use-Case: Provides additional context by identifying the geographic origin of proxies, allowing administrators to implement region-based security policies or further analyze threat patterns.
 
