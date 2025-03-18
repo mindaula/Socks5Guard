@@ -8,7 +8,11 @@ Proxy Scraping and Threat Intelligence Tool with Geolocation Enrichment
 
 
 
+
 Overview
+
+
+
 
 This repository contains a comprehensive toolset designed for cybersecurity professionals and network administrators. It consists of two interrelated components:
 
@@ -20,10 +24,10 @@ This repository contains a comprehensive toolset designed for cybersecurity prof
         Purpose: Enhances proxy data by retrieving geographical location details (city and country) using IPInfo. This data is then stored in a JSON file.
         Security Use-Case: Provides additional context by identifying the geographic origin of proxies, allowing administrators to implement region-based security policies or further analyze threat patterns.
 
-        
 
-Both components work seamlessly together. The main tool gathers and validates proxies, while the geo-enrichment
-module enriches this data with location information. Additionally, a Flask-based API exposes the combined data for integration with firewalls,
+
+Both components work seamlessly together. The main tool gathers and validates proxies, while the geo-enrichment module
+enriches this data with location information. Additionally, a Flask-based API exposes the combined data for integration with firewalls,
 Intrusion Detection Systems (IDS), and Security Information and Event Management (SIEM) solutions.
 Features
 Main Tool
@@ -38,7 +42,8 @@ Main Tool
         Saves validated proxies, non-working proxies, and the blacklist to JSON files for further analysis.
     Automated Execution
         Designed to run continuously, ensuring the proxy data is kept up-to-date.
-        
+
+
 
 Geo-Enrichment Tool
 
@@ -48,7 +53,6 @@ Geo-Enrichment Tool
         Merges location data with the validated proxy list, creating a comprehensive view.
     Output Format
         Outputs enriched data in JSON format, making it easy to integrate into your security systems.
-        
 
 Combined API
 
@@ -58,19 +62,34 @@ Combined API
         /proxy_locations: Returns the geolocation-enriched proxy data.
     Real-Time Data Access
         Access and integrate the data into existing security workflows with simple HTTP requests.
-        
+
+
+
 
 Requirements
 
 
-To run this tool, install the following Python libraries:
 
-pip install requests flask socks BeautifulSoup4 python-dotenv
+To run this tool, install the following Python libraries. You can use the provided requirements.txt file for convenience.
+requirements.txt Content
+
+requests
+flask
+socks
+beautifulsoup4
+python-dotenv
+
+Install all dependencies with:
+
+pip install -r requirements.txt
 
 Make sure you have Python 3 installed.
 Setup and Usage
 1. Configure API Keys
 AbuseIPDB API Key
+
+
+
 
 To check proxies against AbuseIPDB:
 
@@ -83,7 +102,12 @@ To check proxies against AbuseIPDB:
 
         ABUSEIPDB_API_KEY=your_abuseipdb_api_key_here
 
+
+
+
 IPInfo API Key
+
+
 
 To retrieve proxy geolocation data:
 
@@ -96,9 +120,12 @@ To retrieve proxy geolocation data:
 
         IPINFO_API_KEY=your_ipinfo_api_key_here
 
+
+
+
 2. Running the Combined Tools and API
 
-Both components are integrated into a single system. To start the complete solution with the API:
+Both components are integrated into a single system. To start the complete solution with the API, run:
 
 python script.py
 
@@ -107,6 +134,9 @@ This will:
     Begin the proxy scraping, validation, and threat intelligence process.
     Enrich the proxy data with geolocation details.
     Start the Flask API server to expose the data.
+
+
+
 
 3. Accessing the API
 
@@ -123,6 +153,9 @@ curl http://localhost:5000/not_working
 Retrieve Geolocation Data for Proxies:
 
     curl http://localhost:5000/proxy_locations
+
+
+
 
 How It Works
 
@@ -144,7 +177,7 @@ def scrape_proxies():
 It compiles these proxies into a list for further processing.
 Step 2: Proxy Validation
 
-Each proxy is tested by attempting to connect to a known server:
+Each proxy is tested by attempting to connect to a known server. If the connection is successful, the proxy is considered functional:
 
 def check_proxy(proxy):
     try:
@@ -164,10 +197,13 @@ def check_abuseipdb(ip):
     params = {"ipAddress": ip, "maxAgeInDays": 90}
     response = requests.get(url, headers=headers, params=params)
 
+
+
+
 If malicious activity is reported, the proxy is added to the blacklist.
 Step 4: Geolocation Enrichment
 
-The second tool enriches proxy data with geolocation:
+The second tool enriches proxy data with geolocation information:
 
 def get_proxy_location(ip):
     response = requests.get(f"https://ipinfo.io/{ip}/json?token={IPINFO_API_KEY}", timeout=5)
@@ -176,10 +212,13 @@ def get_proxy_location(ip):
     country = data.get("country", "Unknown")
     return f"{city}, {country}"
 
+
+
+
 Each proxy's IP is used to query IPInfo, and the location is merged with the proxy record.
 Step 5: Saving and Integrating Data
 
-The tool saves results in JSON format:
+The tool saves results in JSON format to allow easy integration into external systems:
 
 def save_lists():
     with open("blacklist.json", "w") as f:
@@ -189,7 +228,6 @@ def save_lists():
     with open("proxy_locations.json", "w") as f:
         json.dump(proxy_locations, f, indent=4)
 
-This allows easy integration into external systems.
 Integration with Security Systems
 Firewall & IDS Integration
 
@@ -202,7 +240,12 @@ The combined data can be imported into various security systems:
     SIEM Solutions:
         Correlate the proxy threat data with other security logs to enhance incident response.
 
+
+
+
 Example: Blocking Proxies with iptables on Linux
+
+
 
 while read ip; do sudo iptables -A INPUT -s "$ip" -j DROP; done < blacklist.json
 
@@ -219,7 +262,11 @@ Real-World Use Cases
     SIEM Integration:
         Enrich SIEM data with threat intelligence to enhance situational awareness.
 
+
+
+
 Detailed Workflow and How the Tools Work Together
+
 
     Data Collection:
         The main tool scrapes proxies autonomously from several public sources.
@@ -239,20 +286,28 @@ Detailed Workflow and How the Tools Work Together
     Security Integration:
         The data can be fed directly into security systems (firewalls, IDS, SIEM) to enforce network security policies and monitor threats in real time.
 
-How to Use the API from the Second Tool (Geo-Enrichment)
+
+
+
+How to Use the API from the Geo-Enrichment Tool
 
 The enriched proxy data is combined with the main tool’s data and exposed via the API. To retrieve the geolocation details:
 
     Start the Combined System:
 
+
+
+
 python script.py
 
-Access the Geolocation Endpoint:
+    Access the Geolocation Endpoint:
 
-    curl http://localhost:5000/proxy_locations
 
-    This returns a JSON object containing each proxy and its associated location, making it easy to integrate this data into your security infrastructure.
 
+
+curl http://localhost:5000/proxy_locations
+
+This returns a JSON object containing each proxy and its associated location, making it easy to integrate this data into your security infrastructure.
 Deployment and Automation
 
 For long-term deployment, consider the following:
@@ -264,7 +319,12 @@ For long-term deployment, consider the following:
     Logging and Alerts:
         Implement detailed logging and possibly integrate with an alerting system to notify you of significant changes in proxy threat levels.
 
+
+
+
 Conclusion
+
+
 
 This repository provides a robust, automated solution for proxy threat detection and mitigation:
 
@@ -273,13 +333,20 @@ This repository provides a robust, automated solution for proxy threat detection
     It augments proxy data with geolocation details for enhanced security analysis.
     The Flask API makes it easy to integrate this data into various security systems.
 
-This tool is ideal for network security teams, threat intelligence researchers, and anyone needing 
-real-time data to protect their infrastructure against malicious proxies. It is intended for lawful 
-cybersecurity research and should be used in compliance with all applicable laws and regulations.
+
+
+
+This tool is ideal for network security teams, threat intelligence researchers, and anyone needing real-time
+data to protect their infrastructure against malicious proxies. It is intended for lawful cybersecurity research
+and should be used in compliance with all applicable laws and regulations.
 
 
 
 
 
-For further questions, contributions, or support,
+
+
+
+
+For further questions, contributions, or support, 
 please refer to the repository’s issue tracker or contact the maintainers.
