@@ -1,8 +1,17 @@
 Proxy Scraping and Threat Intelligence Tool
+
+
+
 Overview
-This tool is specifically designed for cybersecurity purposes, allowing security researchers and system administrators to detect, validate, and mitigate threats from malicious SOCKS5 proxies. It autonomously scrapes SOCKS5 proxies from various public sources, validates their functionality, and checks their reputation against [AbuseIPDB](https://www.abuseipdb.com/). The resulting blacklist can be integrated into security systems such as firewalls, Intrusion Detection Systems (IDS), and Security Information and Event Management (SIEM) solutions to enhance network security.
+
+This tool is specifically designed for cybersecurity purposes, allowing security researchers and system administrators to detect,
+validate, and mitigate threats from malicious SOCKS5 proxies. It autonomously scrapes SOCKS5 proxies from various public sources,
+validates their functionality, and checks their reputation against [AbuseIPDB](https://www.abuseipdb.com/). The resulting blacklist 
+can be integrated into security systems such as firewalls, Intrusion Detection Systems (IDS), and Security Information and 
+Event Management (SIEM) solutions to enhance network security.
 
 Features
+
 1. **Autonomous Proxy Scraping**
    - Automatically collects SOCKS5 proxies from multiple public sources without manual intervention.
    
@@ -55,6 +64,7 @@ curl http://localhost:5000/not_working
 ```
 
 How It Works
+
 1. Scraping Proxies
 The script autonomously collects proxies from public sources, ensuring a diverse and extensive dataset.
 ```python
@@ -115,6 +125,7 @@ while read ip; do sudo iptables -A INPUT -s "$ip" -j DROP; done < blacklist.json
 ```
 
 Real-World Use Cases
+
 1. **Network Security:**
    - Protect corporate networks by blocking known malicious proxies.
 2. **Threat Intelligence Research:**
@@ -123,4 +134,5 @@ Real-World Use Cases
    - Use blacklist data to prevent attacks from compromised servers.
 
 Conclusion
-This tool enables the automated detection and blocking of malicious SOCKS5 proxies, aiding in network security. It is intended for security professionals and should only be used for lawful cybersecurity research.
+This tool enables the automated detection and blocking of malicious SOCKS5 proxies, aiding in network security. 
+It is intended for security professionals and should only be used for lawful cybersecurity research.
